@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SkyWay - P2P Data example  branch-master 2020/07/20-a</title>
+    <!-- <link rel="stylesheet" href="../_shared/style.css"> -->
+    <link rel="stylesheet" href="../shared/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="heading">P2P Data example branch-master 2020/07/20-a</h1>
+      <p class="note">
+        Enter remote peer ID to connect.
+      </p>
+      <div class="p2p-data">
+        <div>
+          <p>Your ID: <span id="js-local-id"></span></p>
+          <input type="text" placeholder="Remote Peer ID" id="js-remote-id">
+          <button id="js-connect-trigger">Connect</button>
+          <button id="js-close-trigger">Close</button>
+        </div>
+        <div>
+          <pre class="messages" id="js-messages"></pre>
+          <input type="text" id="js-local-text">
+          <button id="js-send-trigger">Send</button>
+        </div>
+      </div>
+
+<!-- branch-2  start -->
+
+      <button id="start-btn">start</button>
+      <button id="stop-btn">stop</button>
+      <div id="result-div"></div>
+      <!-- <div id="result-div2"></div> -->
+
+      <script>
+        const startBtn = document.querySelector('#start-btn');
+        const stopBtn = document.querySelector('#stop-btn');
+        const resultDiv = document.querySelector('#result-div');
+        // const resultDiv2 = document.querySelector('#result-div2');
+
+        SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.lang = 'ja-JP';
+        recognition.interimResults = true;
+        recognition.continuous = true;
+
+        let finalTranscript = ''; // 確定した(黒の)認識結果
+
+        // const localText = document.getElementById('js-local-text');
+
+        recognition.onresult = (event) => {
+          let interimTranscript = ''; // 暫定(灰色)の認識結果
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            let transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcript;
+            } else {
+              interimTranscript = transcript;
+            }
+          }
+          // resultDiv.innerHTML = finalTranscript  'abc' + '<i style="color:#ddd;">' + interimTranscript + '</i>';
+          resultDiv.innerHTML = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</i>';
+          // const aaa = resultDiv.value;
+          // localText.innerHTML = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</i>';
+          // resultDiv2.innerHTML = finalTranscript + 'def' + '<i style="color:#ddd;">' + interimTranscript + '</i>';
+        }
+
+        startBtn.onclick = () => {
+          recognition.start();
+        }
+        stopBtn.onclick = () => {
+          recognition.stop();
+        }
+      </script>
+
+<!-- branch-2  end -->
+
+
+      <p class="meta" id="js-meta"></p>
+    </div>
+    <script src="//cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <!-- <script src="../_shared/key.js"></script> -->
+    <script src="../shared/key.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
