@@ -1,3 +1,3 @@
 # skyway-data-2
-check create repositry
-test-20200718-a
+
+test-2020/07/20
